@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taylor Swift - Vinyl Player</title>
+    <style>
+        :root {
+            --violet-deep: #4A154B;
+            --violet-main: #6B2D5C;
+            --pink-accent: #FFB7C5;
+            --pink-soft: #FFE4E8;
+            --white-pure: #FFFFFF;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--violet-deep), var(--violet-main), var(--pink-accent));
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--violet-deep);
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+            display: flex;
+            width: 900px;
+            max-width: 100%;
+            overflow: hidden;
+            border: 2px solid var(--pink-soft);
+        }
+
+        /* Left Side: Turntable Player */
+        .player-section {
+            flex: 1.2;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-right: 2px solid var(--pink-soft);
+        }
+
+        .turntable {
+            width: 300px;
+            height: 300px;
+            background: #2b2b2b;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6), 0 10px 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .vinyl {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, #111 35%, #222 36%, #111 37%, #222 65%, #111 66%);
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            animation: spin 3s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .vinyl.playing {
+            animation-play-state: running;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .vinyl-label {
+            width: 90px;
+            height: 90px;
+            background-color: var(--pink-accent);
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+            border: 4px solid var(--violet-deep);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .vinyl-center-hole {
+            width: 14px;
+            height: 14px;
+            background-color: #2b2b2b;
+            border-radius: 50%;
+        }
+
+        /* Tonearm */
+        .tonearm {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            width: 80px;
+            height: 120px;
+            pointer-events: none;
+            transition: transform 0.5s ease;
+            transform-origin: 65px 15px;
+            transform: rotate(-30deg);
+        }
+
+        .tonearm.playing {
+            transform: rotate(0deg);
+        }
+
+        .tonearm-base {
+            width: 30px;
+            height: 30px;
+            background: #888;
+            border-radius: 50%;
+            position: absolute;
+            right: 0;
+            top: 0;
+            border: 2px solid #555;
+        }
+
+        .tonearm-stick {
+            width: 6px;
+            height: 100px;
+            background: #ccc;
+            position: absolute;
+            right: 12px;
+            top: 15px;
+            border-radius: 3px;
+        }
+
+        .tonearm-head {
+            width: 14px;
+            height: 24px;
+            background: var(--violet-main);
+            position: absolute;
+            right: 8px;
+            bottom: 5px;
+            border-radius: 3px;
+        }
+
+        /* Player Controls */
+        .controls {
+            margin-top: 30px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .song-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--violet-deep);
+            text-align: center;
+            height: 1.5em;
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, var(--violet-main), var(--pink-accent));
+            color: var(--white-pure);
+            border: none;
+            padding: 12px 35px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(107, 45, 92, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(107, 45, 92, 0.4);
+        }
+
+        .volume-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 80%;
+            font-weight: 600;
+        }
+
+        .volume-container input[type="range"] {
+            flex: 1;
+            accent-color: var(--violet-main);
+            cursor: pointer;
+        }
+
+        /* Right Side: Song List */
+        .playlist-section {
+            flex: 1;
+            padding: 40px 30px;
+            background: rgba(255, 228, 232, 0.4);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .playlist-header {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--violet-deep);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--pink-accent);
+        }
+
+        .song-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .song-item {
+            background: var(--white-pure);
+            padding: 14px 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+
+        .song-item:hover {
+            border-color: var(--pink-accent);
+            transform: translateX(4px);
+        }
+
+        .song-item.active {
+            background: var(--violet-main);
+            color: var(--white-pure);
+            border-color: var(--violet-main);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Left Section: Vinyl Player -->
+    <div class="player-section">
+        <div class="turntable">
+            <div class="vinyl" id="vinyl">
+                <div class="vinyl-label" id="vinylLabel">
+                    <div class="vinyl-center-hole"></div>
+                </div>
+            </div>
+            <div class="tonearm" id="tonearm">
+                <div class="tonearm-base"></div>
+                <div class="tonearm-stick"></div>
+                <div class="tonearm-head"></div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="song-title" id="currentTitle">Cruel Summer</div>
+            <button class="play-btn" id="playBtn">PLAY</button>
+            
+            <div class="volume-container">
+                <span>🔊</span>
+                <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.8">
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Section: 5 Songs Playlist -->
+    <div class="playlist-section">
+        <div class="playlist-header">Taylor's Playlist</div>
+        <ul class="song-list">
+            <li class="song-item active" onclick="selectSong(0)">
+                <span>1. Cruel Summer</span>
+                <span>Lover</span>
+            </li>
+            <li class="song-item" onclick="selectSong(1)">
+                <span>2. Blank Space</span>
+                <span>1989</span>
+            </li>
+            <li class="song-item" onclick="selectSong(2)">
+                <span>3. Anti-Hero</span>
+                <span>Midnights</span>
+            </li>
+            <li class="song-item" onclick="selectSong(3)">
+                <span>4. Love Story</span>
+                <span>Fearless</span>
+            </li>
+            <li class="song-item" onclick="selectSong(4)">
+                <span>5. Cardigan</span>
+                <span>Folklore</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<audio id="audioPlayer" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+<script>
+    // Audio sources (using sample audio URLs for testing; swap with your preferred MP3 files)
+    const songs = [
+        { title: "Cruel Summer", album: "Lover", color: "#FFB7C5", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" },
+        { title: "Blank Space", album: "1989", color: "#B5D8EB", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" },
+        { title: "Anti-Hero", album: "Midnights", color: "#4A154B", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3" },
+        { title: "Love Story", album: "Fearless", color: "#F4D06F", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3" },
+        { title: "Cardigan", album: "Folklore", color: "#C0C0C0", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3" }
+    ];
+
+    let currentIndex = 0;
+    let isPlaying = false;
+
+    const audio = document.getElementById('audioPlayer');
+    const playBtn = document.getElementById('playBtn');
+    const vinyl = document.getElementById('vinyl');
+    const tonearm = document.getElementById('tonearm');
+    const currentTitle = document.getElementById('currentTitle');
+    const vinylLabel = document.getElementById('vinylLabel');
+    const volumeControl = document.getElementById('volumeControl');
+    const songItems = document.querySelectorAll('.song-item');
+
+    function togglePlay() {
+        if (isPlaying) {
+            pauseMusic();
+        } else {
+            playMusic();
+        }
+    }
+
+    function playMusic() {
+        isPlaying = true;
+        audio.play();
+        playBtn.textContent = 'PAUSE';
+        vinyl.classList.add('playing');
+        tonearm.classList.add('playing');
+    }
+
+    function pauseMusic() {
+        isPlaying = false;
+        audio.pause();
+        playBtn.textContent = 'PLAY';
+        vinyl.classList.remove('playing');
+        tonearm.classList.remove('playing');
+    }
+
+    function selectSong(index) {
+        currentIndex = index;
+        const song = songs[currentIndex];
+
+        // Update active class in list
+        songItems.forEach((item, i) => {
+            item.classList.toggle('active', i === currentIndex);
+        });
+
+        // Update player info
+        currentTitle.textContent = song.title;
+        vinylLabel.style.backgroundColor = song.color;
+        audio.src = song.src;
+
+        // Auto play when changing song
+        playMusic();
+    }
+
+    // Controls listeners
+    playBtn.addEventListener('click', togglePlay);
+
+    volumeControl.addEventListener('input', (e) => {
+        audio.volume = e.target.value;
+    });
+
+    audio.addEventListener('ended', () => {
+        pauseMusic();
+    });
+</script>
+
+</body>
+</html>
